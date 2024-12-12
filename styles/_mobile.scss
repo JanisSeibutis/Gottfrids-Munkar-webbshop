@@ -1,0 +1,501 @@
+body {
+    background-color: $turkose;
+    font-family: Basic, Arial, Helvetica, sans-serif;
+}
+
+* {
+    &:focus-visible {
+        outline: 3px solid blue;
+        border: none;
+    }
+}
+.theme-toggle {
+    height: 2.5rem;
+    width: 2.5rem;
+    border-radius: 50%;
+    top: 80px;
+    left: 20px;
+    position: absolute;
+    border: 3px solid black;
+
+    img {
+        width: 2rem;
+    }
+}
+
+.dark-mode .theme-toggle {
+    border: 2px solid $lightdarktext;
+
+}
+
+.theme-toggle img:first-child {
+    display: none;
+}
+
+.dark-mode .theme-toggle img:first-child {
+    display: block;
+}
+
+.dark-mode .theme-toggle img:last-child {
+    display: none;
+}
+
+h1 {
+    font-size: 2.5rem;
+    font-weight: 600;
+}
+
+.scale {
+    animation: scale ease-out 0.5s;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;  
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    background-color: $beige;
+    height: 10vh;
+    max-height: 3.75rem;
+    width: 100%;
+}
+
+.menu__btn {
+    font-size: 3rem;
+}
+
+.total-price {
+    font-size: 1.75rem;
+    font-weight: 500;
+}
+
+.cart {
+    font-size: 2.5rem;
+    position: relative;
+
+    &-amount {
+        min-width: 1.6rem;
+        max-width: fit-content;
+        min-height: 1.1rem;
+        padding: 0.2rem;
+        position: absolute;
+        background-color: #fff;
+        color: red;
+        font-size: 1.2rem;
+        left: 60%;
+        top: -0.8rem;
+        border: 1px solid white;
+        border-radius: 50%; 
+    }
+}
+.campaigns {
+    border: 2px solid $pink;
+    border-radius: 2rem;
+}
+
+.welcome-text {
+    font-size: 1.5rem;
+    font-weight: 500;
+    max-width: 1400px;
+}
+
+.deal {
+    color: red;
+    font-family: Basic;
+}
+
+.logo {
+    display: flex;
+    justify-content: center;
+    margin-top: 4rem;
+
+    img {
+        width: 15.6rem;
+    }
+}
+.products {
+    max-width: 1400px;
+    grid-template-columns: repeat(auto-fit, minmax(332px, 1fr));
+}
+
+.product {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    font-size: 1.5rem;
+    height: fit-content;
+}
+
+.product-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 1.5rem;
+    background-color: $beige;
+    width: 15rem;
+    padding: 0.2rem 0;
+    border-radius: 1rem;
+    margin: 0.5rem;
+    height: 100%;
+}
+.product__image {
+    width: 18.75rem;
+    border-radius: 1rem;
+}
+
+.amount {
+    display: flex;
+    flex-wrap: wrap;
+    font-size: 1rem;
+    margin-top: 0.5rem;
+    gap: 1rem;  
+}
+
+.cart-amount-div {
+    gap: 0.2rem;
+    max-width: 9rem;
+    width: 6.5rem;
+    margin: 0;
+    height: 4.75rem;
+}
+
+.amount-input {
+    display: inline-block;
+    text-align: center;
+    width: 2.5rem;
+    height: 2rem;
+    max-width: 3rem;
+    font-size: 1.5rem;
+    padding-top: 0.3rem;
+    line-height: 10px;
+}
+
+.cart-amount-input {
+    width: 2rem;
+    font-size: 1.3rem
+}
+
+.decrease-btn, .increase-btn{
+    @include btn-styles;
+    height: 2rem;
+    width: 2.5rem;
+    text-align: center;
+    font-size: 2rem;
+}
+
+.cart-decrease-btn, .cart-increase-btn, .cart-remove-btn {
+   @include btn-styles;
+    height: 2rem;
+    width: 2rem; 
+    font-size: 1.5rem;
+    padding-top: 0.3rem;
+}
+
+.cart-remove-btn {
+width: 100%;
+margin-top: 0.5rem;
+font-size: 1.2rem;
+}
+
+.cart-modal {
+    min-width: 100vw;
+    border: 1px solid #ccc;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    margin: 0;
+    justify-self: center;
+
+    &[open] {
+        min-width: 23rem;
+        max-width: 50%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-self: center;
+        width: 50%;
+        margin-left: auto;
+        margin-right: auto;
+        top: 0;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+        text-align: center;
+    }
+
+    &::backdrop {
+        background-image: url(../public/images/background.jpeg);
+        background-repeat: no-repeat;
+        background-size: cover;  
+    }
+}
+
+.cart-products {
+    width: 100%;
+}
+
+.cart-items {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1rem;
+}
+.cart-image {
+    width: 4.5rem;
+    border-radius: 0.5rem;
+}
+
+.cart-product-info {
+    height: 4.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem;
+    background-color: $beige;
+    width: 10rem;
+    border-radius: 1rem;
+    margin: 0 0.5rem;
+    line-height: 1.2rem;
+}
+
+.cart-end-wrap {
+    width: 100%;
+    margin: 1rem 0;
+}
+
+.cart-end-btn {
+    @include btn-styles;
+    min-width: 9rem;
+    height: 2rem;
+    padding-top: 0.3rem;
+}
+
+.cart-total-price, .shipping-cost, .product-cost {
+    margin-top: 1rem;
+    font-size: 1.2rem;
+    text-align: center;
+}
+
+.discount {
+    width: 100%;
+    text-align: center;
+    color: red;
+}
+
+.free-shipping {
+    color: red;
+}
+
+.order-summary {
+    width: 100%;
+    background-color: $beige;
+}
+
+.checkout {
+    padding-top: 1rem;
+
+    &__item {
+        padding: 0.5rem 0.5rem 0 0.5rem;
+        max-width: 30rem;
+    }
+
+    &__image {
+        height: 3rem;
+        width: 3rem;
+        border-radius: 50%;
+    }
+    &__amount {
+        margin-left: auto;
+        text-wrap: nowrap;
+    }
+    &__price {
+        text-wrap: nowrap;
+
+    }
+}
+
+.discounted {
+    color: red;
+}
+
+/* Remove arrows in Chrome, Edge, and other WebKit browsers */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+-webkit-appearance: none;
+margin: 0;
+}   
+
+/* Remove arrows in Firefox */
+input[type="number"] {
+-moz-appearance: textfield !important;
+appearance: textfield !important;
+}
+
+/* General Reset */
+input[type="number"] {
+appearance: textfield;
+}
+
+.form {
+    width: 95%;
+    max-width: 35rem;
+    align-items: center;
+    font-size: 1rem;
+
+        &__person-id {
+            text-align: center;
+    
+            input {
+            width: 70%;
+            text-align: center;
+            }
+        }
+    
+        &__card {
+            margin: 0.75rem auto 0 auto;
+            width: 80%;
+            gap: 4%;
+            border: 3px solid $pink;
+            border-radius: 1rem;
+            padding: 1rem;
+    
+            label {
+                height: 3.125rem;
+                margin-top: 0.75rem;
+            }
+        }
+}
+
+.form__button {
+    @include btn-styles;
+    border-radius: 1rem;
+    width: 45%;
+    margin: 1rem 0;
+    font-size: 1.2rem;
+    line-height: 1.5rem;
+}
+
+.form__input {
+    border: 1px solid $pink;
+    border-radius: 0.2rem;
+    width: 100%;
+    height: 2rem;
+    font-size: 1.2rem;
+    padding: 0.5rem;
+
+    &:focus-visible {
+        border: none;
+    }
+}
+
+.form__close-reset {
+    width: 100%;
+    height: fit-content;
+    text-wrap: nowrap;
+}
+
+.form__reset, .form__close {
+    background-color: $turkose;
+    font-size: 1rem;
+    width: 48%;
+    height: 2.2rem;
+}
+
+.form__submit {
+    background-color: $pink;
+    font-size: 1.5rem;
+    width: 70%;
+    height: 3rem;
+    margin-bottom: 3rem;
+}
+
+.form__submitted {
+    width: 6rem;
+}
+
+.reset-modal {
+    width: 100%;
+    padding: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 2rem;
+
+    strong {
+        line-height: 2rem;
+        font-size: 1.5rem;
+    }
+
+    button {
+        width: 40%;
+        max-width: 10rem;
+    } 
+}
+
+input[type="radio"] {
+    width: 1.3rem;
+}
+input[type="checkbox"] {
+    width: 1.3rem;
+}
+
+.order-info {
+    min-width: 80vw;
+
+    &[open] {
+        min-width: 20rem;
+        width: 50%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    h2 {
+        margin-top: 0.75rem;
+        font-size: 1.2rem;
+    }
+
+    &::backdrop {
+        background-image: url(../public/images/background.jpeg);
+        background-repeat: no-repeat;
+        background-size: cover;  
+    }
+}
+
+footer {
+    background-color: $beige;
+}
+
+.half {
+    width: 48%;
+}
+
+.full {
+    width: 100%;
+}
+
+.hide {
+    display: none;
+}
+
+.invalid-input-border {
+    border: 3px solid red;
+}
+
+.input-border {
+    border: 1px solid rgb(255, 119, 142);
+}
+
+.invalid-input-color {
+    color: red;
+    }
+
+.valid-input-color {
+    color: green;
+}

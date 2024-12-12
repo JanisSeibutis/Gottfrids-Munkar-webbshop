@@ -1,0 +1,38 @@
+$turkose: rgb(190, 233, 247);
+$pink: rgb(255, 119, 142);
+$beige: rgb(252, 242, 208);
+$dark: #121212;
+$lessdark: #1E1E1E;
+$lightdarktext: #B3B3B3;
+$accent: #BB86FC;
+$darkbutton: #03DAC6;
+$error: #CF6679;
+$border: #292929;
+
+@keyframes scale {
+  0% {transform: scale(1)}
+  50% {transform: scale(1.2)}
+  100% {transform: scale(1)}
+}
+
+  @mixin btn-styles {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    background-color: $beige; 
+    border: 1px solid gray;
+    font-weight: bold;
+    text-align: center;
+    line-height: 0;
+    padding-top: 0.3rem
+  }
+
+  @mixin dark-btn {
+    background-color: $darkbutton;
+    color: $dark;
+  }
+
+  @font-face {
+    font-family: 'Basic';
+    src: url('/public/fonts/NotoSansDevanagari-VariableFont_wdth\,wght.ttf');
+  }

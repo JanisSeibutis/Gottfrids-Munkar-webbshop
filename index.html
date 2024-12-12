@@ -1,0 +1,422 @@
+<!doctype html>
+<html lang="sv">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="styles/style.scss" rel="stylesheet" />
+    <title>Gottfrids Munkar</title>
+    <meta
+      name="description"
+      content="Vi är ett familjeägt företag i Snaskköping som tillverkar läckra, handgjorda munkar med noggrant utvalda ingredienser för perfekt smak och textur."
+    />
+    <meta name="author" content="Gottfrids munkar" />
+  </head>
+  <body>
+    <header class="header pt-3">
+      <button
+        class="fa-solid fa-bars ml-2 menu__btn"
+        aria-label="meny"
+      ></button>
+      <span class="total-price" aria-live="polite">Totalt: 0 kr</span>
+      <button
+        class="fa-solid fa-cart-shopping text-gray-500 mr-8 cart"
+        aria-label="varukorg"
+      >
+        <span class="cart-amount">0</span>
+      </button>
+    </header>
+    <main class="relative">
+      <button
+        class="theme-toggle flex justify-center items-center"
+        aria-label="Theme toggle"
+      >
+        <img
+          src="public/icons/lightmode.svg"
+          alt="light theme toggle"
+          width="24"
+          height="24"
+        />
+        <img
+          src="public/icons/darkmode.svg"
+          alt="dark theme toggle"
+          width="24"
+          height="24"
+        />
+      </button>
+      <section class="flex flex-col items-center main__info">
+        <div class="logo">
+          <img
+            src="public/logos/gottfrid-logo.png"
+            alt="Logotypen för varumärket, föreställande ett porträtt av en gammal skäggig älv med färgglada munkar vid sidan om."
+            width="1024"
+            height="1024"
+          />
+        </div>
+        <h1>Gottfrids Munkar</h1>
+        <p class="welcome-text w-10/12">
+          Vi är ett familjeägt företag i Snaskköping som tillverkar läckra,
+          handgjorda munkar. Med en passion för kvalitet och tradition bakas
+          varje munk med noggrant utvalda ingredienser för att skapa den
+          perfekta kombinationen av smak och textur.
+        </p>
+        <div
+          class="campaigns flex flex-col justify-center items-center mt-5 m-3 p-3"
+        >
+          <div class="flex flex-wrap justify-center">
+            <span class="welcome-text deal pt-3 text-center"
+              >Köp 10 stycken av samma smak
+            </span>
+            <span class="welcome-text deal pt-3 text-center">
+              - få 10% rabatt!
+            </span>
+          </div>
+          <div class="flex flex-wrap justify-center mt-2">
+            <span class="welcome-text deal pt-3 text-center">
+              Beställ minst 15 munkar
+            </span>
+            <span class="welcome-text deal pt-3 text-center">
+              - vi bjuder på frakten!
+            </span>
+          </div>
+        </div>
+      </section>
+      <dialog class="cart-modal" aria-labelledby="cart-title">
+        <h2 id="cart-title" class="pt-5">Varukorgen</h2>
+        <div class="flex justify-center gap-4 cart-end-wrap flex-wrap">
+          <button class="cart-end-btn cart-close-btn">Fortsätt handla</button>
+          <button class="cart-end-btn cart-sub-btn">Till beställning</button>
+        </div>
+        <div class="cart-products"></div>
+
+        <div class="discount-info flex flex-col"></div>
+        <span class="product-cost font-bold">Produktkostnad: 0 kr</span>
+        <span class="shipping-cost font-bold">Fraktkostnad: 0 kr</span>
+        <span class="cart-total-price font-bold">Totalt: 0 kr</span>
+      </dialog>
+      <section
+        class="flex justify-center items-center flex-col pt-10 pb-4 pl-3 pr-3 product-wrap"
+      >
+        <h2 class="flex justify-center pt-3 text-3xl">Våra produkter</h2>
+        <div class="sort flex justify-center gap-5 text-3xl m-3">
+          <button
+            class="sort-name"
+            aria-label="Sortera efter namn i alfabetisk ordning"
+            title="Sortera efter namn"
+          >
+            <i class="fa-solid fa-arrow-down-a-z"></i>
+          </button>
+
+          <button
+            class="sort-price"
+            aria-label="Sortera efter pris, lägsta till högsta"
+            title="Sortera efter pris"
+          >
+            <i class="fa-solid fa-arrow-down-1-9"></i>
+          </button>
+
+          <button
+            class="sort-rating"
+            aria-label="Sortera efter kundbedömning, högsta till lägsta"
+            title="Sortera efter kundbedömning"
+          >
+            <i class="fa-solid fa-ranking-star"></i>
+          </button>
+
+          <button
+            class="sort-category"
+            aria-label="Sortera efter kategori"
+            title="Sortera efter kategori"
+          >
+            <i class="fa-solid fa-arrow-down-short-wide"></i>
+          </button>
+        </div>
+        <div
+          id="products"
+          class="products grid justify-items-center full"
+        ></div>
+      </section>
+      <section
+        class="order-summary flex flex-col justify-center items-center hide"
+        id="order-summary"
+      >
+        <h2 class="pt-3 text-xl font-bold">Order sammanställning</h2>
+        <div
+          class="flex flex-col justify-center items-center full checkout"
+        ></div>
+        <div
+          class="checkout__total flex flex-col justify-center items-center gap-3 text-lg"
+        ></div>
+        <form
+          action="submit"
+          autocomplete="off"
+          class="form flex flex-wrap mt-5 items-center justify-between"
+        >
+          <label class="half mt-3">
+            <input
+              type="text"
+              name="name"
+              class="form__name form__input"
+              required
+              aria-required="true"
+              autocomplete="name"
+            />
+            <span>Namn</span>
+            <span id="nameError" class="sr-only" aria-live="polite"></span>
+            <span class="inputError"></span>
+          </label>
+
+          <label class="half mt-3">
+            <input
+              type="text"
+              name="lastname"
+              class="form__lastname form__input"
+              required
+              aria-required="true"
+              autocomplete="family-name"
+            />
+            <span>Efternamn</span>
+            <span id="lastnameError" class="sr-only" aria-live="polite"></span>
+            <span class="inputError"></span>
+          </label>
+
+          <label class="full mt-3">
+            <input
+              type="text"
+              name="street"
+              class="form__street form__input"
+              required
+              aria-required="true"
+              autocomplete="address-level1"
+            />
+            <span>Gata</span>
+            <span id="streetError" class="sr-only" aria-live="polite"></span>
+            <span class="inputError"></span>
+          </label>
+
+          <label class="half mt-3">
+            <input
+              type="text"
+              name="postalcode"
+              class="form__postcode form__input"
+              required
+              aria-required="true"
+              inputmode="numeric"
+              autocomplete="postal-code"
+            />
+            <span>Postnummer</span>
+            <span id="postcodeError" class="sr-only" aria-live="polite"></span>
+            <span class="inputError"></span>
+          </label>
+
+          <label class="half mt-3">
+            <input
+              type="text"
+              name="doorcode"
+              class="form__doorcode form__input"
+              inputmode="numeric"
+            />
+            <span>Portkod</span>
+            <span id="doorcodeError" class="sr-only" aria-live="polite"></span>
+            <span class="inputError"></span>
+          </label>
+
+          <label class="half mt-3">
+            <input
+              type="text"
+              name="city"
+              class="form__city form__input"
+              required
+              aria-required="true"
+              autocomplete="address-level2"
+            />
+            <span>Postort</span>
+            <span id="cityError" class="sr-only" aria-live="polite"></span>
+            <span class="inputError"></span>
+          </label>
+
+          <label class="half mt-3">
+            <input
+              type="text"
+              name="phone"
+              class="form__phone form__input"
+              required
+              aria-required="true"
+              inputmode="numeric"
+              autocomplete="tel"
+            />
+            <span>Telefon (mobil)</span>
+            <span id="phoneError" class="sr-only" aria-live="polite"></span>
+            <span class="inputError"></span>
+          </label>
+
+          <label class="full mt-3">
+            <input
+              type="email"
+              name="email"
+              class="form__email form__input"
+              required
+              aria-required="true"
+              autocomplete="email"
+            />
+            <span>E-postadress</span>
+            <span id="emailError" class="sr-only" aria-live="polite"></span>
+            <span class="inputError"></span>
+          </label>
+
+          <div
+            class="form__payment flex flex-row items-start justify-center gap-5 mt-3 full"
+          >
+            <label class="flex flex-col items-center justify-center">
+              <span>Kort</span>
+              <input
+                type="radio"
+                name="payment"
+                class="form__payment-card"
+                checked
+              />
+            </label>
+
+            <label class="flex flex-col items-center justify-center">
+              <span>Faktura</span>
+              <input
+                type="radio"
+                name="payment"
+                class="form__payment-invoice"
+              />
+              <span class="over-limit">(Max belopp 800kr)</span>
+              <span class="sr-only" id="overLimit"
+                >Beställningen överstiger 800 kronor</span
+              >
+            </label>
+          </div>
+
+          <div class="form__person-id mt-3 hide full">
+            <label class="flex flex-col items-center">
+              <input
+                type="text"
+                name="identitycode"
+                class="pers-id form__input"
+                placeholder="xxxxxxxx-xxxx"
+                inputmode="numeric"
+              />
+              <span>Personnummer (12 siffror)</span>
+              <span
+                id="identityError"
+                class="sr-only"
+                aria-live="polite"
+              ></span>
+              <span class="inputError"></span>
+            </label>
+          </div>
+
+          <div class="form__card flex flex-wrap mt-3">
+            <label class="full mt-3">
+              <input type="text" class="form__input" />
+              <span>Kortinnehavare</span>
+            </label>
+
+            <label class="full mt-3">
+              <input type="text" class="form__input" />
+              <span>Kortnummer</span>
+            </label>
+
+            <label class="half mt-3">
+              <input
+                type="text"
+                placeholder="MM/ÅÅ"
+                class="text-center form__input"
+              />
+              <span>Månad/År</span>
+            </label>
+
+            <label class="half mt-3">
+              <input type="text" class="text-center form__input" />
+              <span>CVV kod</span>
+            </label>
+          </div>
+
+          <div class="w-full flex flex-col form-agreements mt-3">
+            <div class="flex w-full items-center gap-3">
+              <span>Godkänn användning av personuppgifter</span>
+              <label class="flex checkbox">
+                <input
+                  type="checkbox"
+                  class="form__confirm-data"
+                  name="personuppgifter"
+                />
+              </label>
+            </div>
+
+            <div class="flex w-full items-center mt-3 gap-3">
+              <span>Beställ nyhetsbrev</span>
+              <label class="flex checkbox">
+                <input
+                  type="checkbox"
+                  class="form__newsletter"
+                  checked
+                  name="nyhetsbrev"
+                />
+              </label>
+            </div>
+          </div>
+
+          <label class="full mt-3">
+            <input type="text" class="form__discount form__input" />
+            <span>Mata in rabattkupongen här:</span>
+          </label>
+          <div class="flex gap-3 full flex-col items-center justify-center">
+            <div
+              class="form__close-reset flex items-center justify-center gap-3"
+            >
+              <button class="form__close form__button" type="button">
+                Till varukorgen
+              </button>
+              <button type="reset" class="form__reset m-2 form__button">
+                Ångra beställning
+              </button>
+            </div>
+            <button type="submit" class="form__submit m-2 form__button">
+              Beställ
+            </button>
+
+            <dialog
+              class="form__hard-reset items-center"
+              aria-labelledby="reset-title"
+              aria-describedby="reset-description"
+            >
+              <div class="reset-modal flex flex-col">
+                <strong class="text-center block" id="reset-title">
+                  Är du säker?
+                </strong>
+                <p id="reset-description" class="text-center">
+                  Detta kommer att nollställa hela beställningen!
+                </p>
+                <div class="full flex justify-center gap-3">
+                  <button class="form__modal--close form__button">
+                    Tillbaka
+                  </button>
+                  <button class="form__hard-reset-btn text-nowrap form__button">
+                    Återställ
+                  </button>
+                </div>
+              </div>
+            </dialog>
+          </div>
+          <span class="sr-only" aria-live="polite" id="success-sr"></span>
+          <dialog
+            class="order-info flex flex-col gap-3 items-center font-bold font-lg"
+          ></dialog>
+        </form>
+      </section>
+    </main>
+    <footer class="w-full">
+      <div class="flex flex-col items-center">
+        <span>Kontakt info:</span>
+        <span>Munkgatan 20a</span>
+        <span>82139 Snaskköping</span>
+        <span>Tel: 076*******</span>
+      </div>
+    </footer>
+    <script type="module" src="/main.mjs"></script>
+  </body>
+</html>

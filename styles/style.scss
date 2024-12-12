@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import './variables';
+@import './mobile';
+@import './dark';
+
+@import '@fortawesome/fontawesome-free/css/all.min.css';
