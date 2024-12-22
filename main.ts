@@ -1,47 +1,49 @@
 import '/styles/style.scss'
-import productArray from './products.mjs'
-import { toggleTheme } from './theme-toggle.mjs'
-import { sortingFunc } from './sorting.mjs'
-import { renderCheckout, header, validateForm } from './checkout.mjs'
+import {productArray,Product} from './products'
+import { toggleTheme } from './theme-toggle'
+import { sortingFunc } from './sorting'
+import { renderCheckout, header, validateForm } from './checkout'
 
 // Storlek på produktbilder
-const productImageWidth = 1024
-const productImageHeight = 1024
+const productImageWidth: number = 1024
+const productImageHeight: number = 1024
+
+type HtmlEl = HTMLElement | null
 
 // Definerade variabler
-const productDiv = document.querySelector('#products')
-const cart = document.querySelector('.cart')
-const cartModal = document.querySelector('.cart-modal')
-const cartProducts = document.querySelector('.cart-products')
-const cartTotalPrice = document.querySelector('.cart-total-price')
-const closeCartBtn = document.querySelector('.cart-close-btn')
-const subCartBtn = document.querySelector('.cart-sub-btn')
-const discount = document.querySelector('.discount-info')
-const shippingCost = document.querySelector('.shipping-cost')
-const productCost = document.querySelector('.product-cost')
-const backToBasketBtn = document.querySelector('.form__close')
-const footer = document.querySelector('footer')
-const cartAmount = document.querySelector('.cart-amount')
-const totalPrice = document.querySelector('.total-price')
-const mainInfo = document.querySelector('.main__info')
-const productWrap = document.querySelector('.product-wrap')
-const themeToggleBtn = document.querySelector('.theme-toggle')
+const productDiv: HtmlEl = document.querySelector('#products')
+const cart: HtmlEl = document.querySelector('.cart')
+const cartModal: HtmlEl = document.querySelector('.cart-modal')
+const cartProducts: HtmlEl = document.querySelector('.cart-products')
+const cartTotalPrice: HtmlEl = document.querySelector('.cart-total-price')
+const closeCartBtn: HtmlEl = document.querySelector('.cart-close-btn')
+const subCartBtn: HtmlEl = document.querySelector('.cart-sub-btn')
+const discount: HtmlEl = document.querySelector('.discount-info')
+const shippingCost: HtmlEl = document.querySelector('.shipping-cost')
+const productCost: HtmlEl = document.querySelector('.product-cost')
+const backToBasketBtn: HtmlEl = document.querySelector('.form__close')
+const footer: HtmlEl = document.querySelector('footer')
+const cartAmount: HtmlEl = document.querySelector('.cart-amount')
+const totalPrice: HtmlEl = document.querySelector('.total-price')
+const mainInfo: HtmlEl = document.querySelector('.main__info')
+const productWrap: HtmlEl = document.querySelector('.product-wrap')
+const themeToggleBtn: HtmlEl = document.querySelector('.theme-toggle')
 
-export const formSection = document.querySelector('#order-summary')
+export const formSection: HtmlEl = document.querySelector('#order-summary')
 
 toggleTheme()
 
 // Varukorgslista
-let cartItems = []
+let cartItems: Product[] = []
 // Kopia av varukorgslistan
-export let shallowCopyCartItems = []
+export let shallowCopyCartItems: Product[] = []
 // Fraktkostnad
-export let shipping = 0
+export let shipping: number = 0
 // Summan som ska skickas till beställningsformuläret
-let sumToCheckout
+let sumToCheckout: number
 
 /* Gör prispåslag på 15%, fredag efter kl.15 fram till och med måndag kl.3 */ //----------------KRAV---------------
-const weekendPrice = () => {
+const weekendPrice: () => void = () => {
   // Aktuell tid
   const currentTime = new Date()
   if (
@@ -58,7 +60,7 @@ const weekendPrice = () => {
 weekendPrice()
 
 /* Skriver ut rating stjärnor enligt produkt rating */
-const setRating = rating => {
+const setRating: (rating: number) => string = rating => {
   let stars = ''
   for (let i = 0; i < Math.floor(rating); i++) {
     stars += `<i class="fa fa-star" aria-hidden="true"></i>`
@@ -73,14 +75,14 @@ const setRating = rating => {
 
 /**
  *Skriver ut alla tillgängliga produkter
- * @param {*} products Produktlista från /products.mjs
+ * @param products Produktlista från /products.mjs
  */
-const renderProducts = products => {
-  themeToggleBtn.classList.remove('hide')
+const renderProducts: (product: Product[]) => void = products => {
+  themeToggleBtn?.classList.remove('hide')
 
-  productDiv.innerHTML = ''
+  productDiv!.innerHTML = ''
   products.forEach(p => {
-    productDiv.innerHTML += `
+    productDiv!.innerHTML += `
     <article class="product" data-id=${p.id}>
         <img class="product__image" src="${p.image}" alt="Bild på munk med ${p.name} smak" width=${productImageWidth} height=${productImageHeight}>
         <div class="product-wrap">
@@ -102,11 +104,11 @@ const renderProducts = products => {
 renderProducts(productArray)
 
 /* Lägger till event till produkt knappar */
-const addBtnEvents = () => {
-  const decreaseBtn = document.querySelectorAll('.decrease-btn')
-  decreaseBtn.forEach(b => b.addEventListener('click', e => decreaseAmount(e)))
+const addBtnEvents: () => void = () => {
+  const decreaseBtn = document.querySelectorAll('.decrease-btn') as NodeListOf<HTMLElement>
+  decreaseBtn.forEach((b: HtmlEl) => b!.addEventListener('click', (e: MouseEvent) => decreaseAmount(e)))
 
-  const increaseBtn = document.querySelectorAll('.increase-btn')
+  const increaseBtn = document.querySelectorAll('.increase-btn') as NodeListOf<HTMLElement>
   increaseBtn.forEach(b => b.addEventListener('click', e => increaseAmount(e)))
 }
 addBtnEvents()
@@ -124,7 +126,7 @@ sortingFunc()
 shallowCopyCartItems = cartItems.map(item => ({ ...item }))
 
 // Minska produktantal i varukorgen
-const decreaseAmount = e => {
+const decreaseAmount: (e: MouseEvent) => void = e => {
   const eId = e.target.dataset.id
   const foundIndex = productArray.findIndex(product => product.id == eId)
   // Om produkt inte existerar i listan eller om produktens antal är 0, avsluta.

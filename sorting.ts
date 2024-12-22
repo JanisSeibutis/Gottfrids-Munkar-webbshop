@@ -1,5 +1,5 @@
-import productArray from './products.mjs'
-import { renderSortedProducts } from './main.mjs'
+import productArray from './products'
+import { renderSortedProducts } from './main'
 
 /* Lägger till sorterings funktion till alla sorterings knappar */ // ----------------KRAV--------------
 export const sortingFunc = () => {

@@ -4,7 +4,7 @@ import {
   shallowCopyCartItems,
   resetPage,
   formSection,
-} from './main.mjs'
+} from './main'
 
 // Definerade variabler
 export const header = document.querySelector('header')

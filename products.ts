@@ -1,18 +1,20 @@
 // Länkar till bildfiler
-const appleFritter = './images/apple-fritter.jpeg'
-const chocholate = './images/chocholate.jpeg'
-const cookiesAndCream = './images/cookies&cream.jpeg'
-const cruller = './images/cruller.jpeg'
-const halloween = './images/halloween.jpeg'
-const mapleBacon = './images/maple-bacon.jpeg'
-const matcha = './images/matcha.jpeg'
-const peanutButter = './images/peanutbutter-jelly.jpeg'
-const pumpkin = './images/pumpkin-spice.jpeg'
-const smores = './images/smores.jpeg'
-const strawberry = './images/strawberry.jpeg'
+const appleFritter: string = './images/apple-fritter.jpeg'
+const chocholate: string = './images/chocholate.jpeg'
+const cookiesAndCream: string = './images/cookies&cream.jpeg'
+const cruller: string = './images/cruller.jpeg'
+const halloween: string = './images/halloween.jpeg'
+const mapleBacon: string = './images/maple-bacon.jpeg'
+const matcha: string = './images/matcha.jpeg'
+const peanutButter: string = './images/peanutbutter-jelly.jpeg'
+const pumpkin: string = './images/pumpkin-spice.jpeg'
+const smores: string = './images/smores.jpeg'
+const strawberry: string = './images/strawberry.jpeg'
+
+export type Product = {id: number, name: string, price: number, amount: number, image: string, rating: number, category: string}
 
 // Produkter
-const productArray = [
+export const productArray = [
   {
     id: 0,
     name: 'Apple-fritter',
@@ -115,4 +117,3 @@ const productArray = [
   },
 ]
 
-export default productArray
