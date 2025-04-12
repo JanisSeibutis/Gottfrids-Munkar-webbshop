@@ -1,3 +1,3 @@
 export default {
-  base: '/GOTTFRIDS-MUNKAR/',
+  base: '/Gottfrids-Munkar-webbshop/',
 }
