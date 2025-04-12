@@ -13,7 +13,7 @@ type HtmlEl = HTMLElement | null
 // Definerade variabler
 const productDiv: HtmlEl = document.querySelector('#products')
 const cart: HtmlEl = document.querySelector('.cart')
-const cartModal: HtmlEl = document.querySelector('.cart-modal')
+const cartModal: HTMLDialogElement | null = document.querySelector('.cart-modal')
 const cartProducts: HtmlEl = document.querySelector('.cart-products')
 const cartTotalPrice: HtmlEl = document.querySelector('.cart-total-price')
 const closeCartBtn: HtmlEl = document.querySelector('.cart-close-btn')
@@ -106,7 +106,7 @@ renderProducts(productArray)
 /* Lägger till event till produkt knappar */
 const addBtnEvents: () => void = () => {
   const decreaseBtn = document.querySelectorAll('.decrease-btn') as NodeListOf<HTMLElement>
-  decreaseBtn.forEach((b: HtmlEl) => b!.addEventListener('click', (e: MouseEvent) => decreaseAmount(e)))
+  decreaseBtn.forEach(b => b.addEventListener('click', e => decreaseAmount(e)))
 
   const increaseBtn = document.querySelectorAll('.increase-btn') as NodeListOf<HTMLElement>
   increaseBtn.forEach(b => b.addEventListener('click', e => increaseAmount(e)))
@@ -127,15 +127,16 @@ shallowCopyCartItems = cartItems.map(item => ({ ...item }))
 
 // Minska produktantal i varukorgen
 const decreaseAmount: (e: MouseEvent) => void = e => {
-  const eId = e.target.dataset.id
-  const foundIndex = productArray.findIndex(product => product.id == eId)
+  const target = e.target as HtmlEl
+  const eId: number = parseInt(target?.dataset.id!)
+  const foundIndex: number = productArray.findIndex(product => product.id == eId)
   // Om produkt inte existerar i listan eller om produktens antal är 0, avsluta.
   if (foundIndex == -1) {
     return
   }
 
   // Om produktantalet blir 0, ta bort produkten från kopierade varukorgslistan
-  if (productArray[foundIndex].amount == 1 && !cartModal.open) {
+  if (productArray[foundIndex].amount == 1 && !cartModal?.open) {
     const remainingItems = shallowCopyCartItems.filter(item => item.id != eId)
     shallowCopyCartItems = [...remainingItems]
   }
@@ -144,7 +145,7 @@ const decreaseAmount: (e: MouseEvent) => void = e => {
     return
   }
   // Om varukorgen är öppen, låt inte minska produktens antal mindre än 1
-  if (cartModal.open) {
+  if (cartModal?.open) {
     if (productArray[foundIndex].amount == 1) {
       return
     }
@@ -154,30 +155,33 @@ const decreaseAmount: (e: MouseEvent) => void = e => {
 
   // Om produktens antal blir 0 efter minskning, ta bort produkten från korglistan
   if (productArray[foundIndex].amount == 0) {
+  const target = e.target as HtmlEl
+
     const remainingProducts = cartItems.filter(
-      item => item.id != e.target.dataset.id,
+      item => item.id != eId,
     )
     cartItems = [...remainingProducts]
   }
 
-  document.querySelector(`.amount-${eId}`).value =
-    productArray[foundIndex].amount
+  (document.querySelector(`.amount-${eId}`) as HTMLInputElement).value =
+    productArray[foundIndex].amount.toString()
 
   countTotalPrice()
   renderCartSum()
 
-  if (cartModal.open) {
+  if (cartModal?.open) {
     renderCartInputAmount(eId, productArray[foundIndex].amount)
   }
 
   // Animation på total priset vid ändring
-  totalPrice.classList.add('scale')
-  setTimeout(() => totalPrice.classList.remove('scale'), 500) // -------------------KRAV--------------------
+  totalPrice?.classList.add('scale')
+  setTimeout(() => totalPrice?.classList.remove('scale'), 500) // -------------------KRAV--------------------
 }
 
 // Öka produktantal i varukorgen
-const increaseAmount = e => {
-  const eId = e.target.dataset.id
+const increaseAmount:  (e: MouseEvent) => void = e => {
+  const target = e.target as HtmlEl
+  const eId: number = parseInt(target?.dataset.id!)
   const foundIndex = productArray.findIndex(product => product.id == eId)
 
   if (foundIndex == -1) {
@@ -187,87 +191,87 @@ const increaseAmount = e => {
   productArray[foundIndex].amount += 1
 
   // Om produkten INTE existerar i korglistan, lägg till produkten i listan
-  if (!cartItems.some(item => item.id == e.target.dataset.id)) {
+  if (!cartItems.some(item => item.id == parseInt(target?.dataset.id!))) {
     cartItems.push(productArray[foundIndex])
   }
 
-  if (!shallowCopyCartItems.some(item => item.id == e.target.dataset.id)) {
+  if (!shallowCopyCartItems.some(item => item.id == parseInt(target?.dataset.id!))) {
     shallowCopyCartItems.push({ ...productArray[foundIndex] })
   }
 
-  document.querySelector(`.amount-${eId}`).value =
-    productArray[foundIndex].amount
+  (document.querySelector(`.amount-${eId}`) as HTMLInputElement).value =
+    productArray[foundIndex].amount.toString()
 
   countTotalPrice()
   renderCartSum()
 
-  if (cartModal.open) {
+  if (cartModal?.open) {
     renderCartInputAmount(eId, productArray[foundIndex].amount)
   }
 
   // Animation på total priset vid ändring
-  totalPrice.classList.add('scale')
-  setTimeout(() => totalPrice.classList.remove('scale'), 500) // -------------------KRAV--------------------
+  totalPrice?.classList.add('scale')
+  setTimeout(() => totalPrice?.classList.remove('scale'), 500) // -------------------KRAV--------------------
 }
 
 // Öppna varukorgen vid tryck på korgikonen
-cart.addEventListener('click', () => {
+cart?.addEventListener('click', () => {
   if (cartItems.length === 0) {
     return
   }
   renderCart()
-  cartModal.showModal()
+  cartModal?.showModal()
   selectAllInputs('cart-amount-input', 'cartId')
 })
 
 // Lägg till event på varukorgs knappar
 const addCartBtnEvents = () => {
   const decreaseBtn = document.querySelectorAll('.cart-decrease-btn')
-  decreaseBtn.forEach(b => b.addEventListener('click', e => decreaseAmount(e)))
+  decreaseBtn.forEach(b => b.addEventListener('click', e => decreaseAmount(e as MouseEvent)))
 
   const increaseBtn = document.querySelectorAll('.cart-increase-btn')
-  increaseBtn.forEach(b => b.addEventListener('click', e => increaseAmount(e)))
+  increaseBtn.forEach(b => b.addEventListener('click', e => increaseAmount(e as MouseEvent)))
 
   const removeBtns = document.querySelectorAll('.cart-remove-btn')
   removeBtns.forEach(button =>
     button.addEventListener('click', e => removeItem(e)),
   )
-  closeCartBtn.addEventListener('click', () => {
-    cartModal.close()
+  closeCartBtn?.addEventListener('click', () => {
+    cartModal?.close()
     // formSection.classList.add('hide')
-    mainInfo.classList.remove('hide')
-    productWrap.classList.remove('hide')
+    mainInfo?.classList.remove('hide')
+    productWrap?.classList.remove('hide')
   })
 
-  subCartBtn.addEventListener('click', () => {
-    mainInfo.classList.add('hide')
-    productWrap.classList.add('hide')
-    cartModal.close()
+  subCartBtn?.addEventListener('click', () => {
+    mainInfo?.classList.add('hide')
+    productWrap?.classList.add('hide')
+    cartModal?.close()
     renderCheckout()
     validateForm()
-    formSection.classList.remove('hide')
-    formSection.scrollIntoView()
-    footer.classList.add('hide')
+    formSection?.classList.remove('hide')
+    formSection?.scrollIntoView()
+    footer?.classList.add('hide')
   })
 }
 
 // Skickas tillbaka till varukorgen från checkout
-backToBasketBtn.addEventListener('click', () => {
-  themeToggleBtn.classList.remove('hide')
-  mainInfo.classList.remove('hide')
-  productWrap.classList.remove('hide')
-  cartModal.showModal()
-  formSection.classList.add('hide')
-  header.classList.remove('hide')
-  footer.classList.remove('hide')
+backToBasketBtn?.addEventListener('click', () => {
+  themeToggleBtn?.classList.remove('hide')
+  mainInfo?.classList.remove('hide')
+  productWrap?.classList.remove('hide')
+  cartModal?.showModal()
+  formSection?.classList.add('hide')
+  header?.classList.remove('hide')
+  footer?.classList.remove('hide')
 })
 
 // Öppna varukorgen
 const renderCart = () => {
-  cartProducts.innerHTML = ''
+  cartProducts!.innerHTML = ''
 
   cartItems.forEach(p => {
-    cartProducts.innerHTML += `
+    cartProducts!.innerHTML += `
         <div class="cart-items">
           <img class="cart-image" src="${p.image}" alt="Bild på munk med ${p.name} smak" width=${productImageWidth} height=${productImageHeight}>
           <h3 class="cart-product-info" >
@@ -291,18 +295,18 @@ const renderCart = () => {
 }
 
 //  Uppdatera varje produkts antal i varukorgens input ruta
-const renderCartInputAmount = (id, newValue) => {
-  const inputAmount = document.querySelector(`[data-cart-id="${id}"]`)
-  inputAmount.value = newValue
+const renderCartInputAmount: (id: number, newValue: number) => void = (id, newValue) => {
+  const inputAmount = (document.querySelector(`[data-cart-id="${id}"]`) as HTMLInputElement | null)
+  inputAmount!.value = newValue.toString()
 }
 
 // Ta bort alla specialtecken från produktantal input
 const allowOnlyNumbers = () => {
-  const amountInput = document.querySelectorAll('.amount-input')
-  amountInput.forEach(input =>
+  const amountInput = document.querySelectorAll<HTMLInputElement>('.amount-input')
+  amountInput.forEach(input => {
     input.addEventListener('input', () => {
       input.value = input.value.replace(/[^0-9]/g, '')
-    }),
+    })}
   )
 }
 allowOnlyNumbers()
@@ -342,30 +346,40 @@ export const countTotalPrice = () => {
   // Om det finns minst 15 produkter i varukorgen, ändra frakt till gratis -------------------KRAV-----------------
   if (totalAmount >= 15) {
     shipping = 0
-    shippingCost.innerHTML = `Du har uppnått gratis frakt`
-    shippingCost.classList.add('free-shipping')
+    if (shippingCost) {
+      shippingCost.innerHTML = `Du har uppnått gratis frakt`
+      shippingCost.classList.add('free-shipping')
+    }
   }
   // Annars ändra fraktsumman till 25kr + 10% av totala produktsumman ---------------KRAV-----------
   else {
     shipping = Math.ceil(25 + summedPrice * 0.1)
-    shippingCost.innerHTML = `Fraktkostnad: ${shipping} kr`
-    shippingCost.classList.remove('free-shipping')
+    if (shippingCost) {
+      shippingCost.innerHTML = `Fraktkostnad: ${shipping} kr`
+      shippingCost.classList.remove('free-shipping')
+    }
   }
 
-  totalPrice.innerHTML = `Totalt: ${summedPrice} kr`
-  productCost.innerHTML = `Produktkostnad: ${summedPrice} kr`
+  if (totalPrice && productCost) {
+    totalPrice.innerHTML = `Totalt: ${summedPrice} kr`
+    productCost.innerHTML = `Produktkostnad: ${summedPrice} kr`
+  }
 
   // Om det är måndag mellan kl 00.00 och kl 10.00, ge 10% rabatt på hela ordern -----------------KRAV----------------
   const currentTime = new Date()
   if (currentTime.getDay() === 1 && currentTime.getHours() < 10) {
     const discountedPrice = Math.floor(summedPrice * 0.9)
     let saved = Math.ceil(summedPrice * 0.1)
+    if (discount)
     discount.innerHTML = `<span class="discount">Måndagsrabatt: 10 % på hela beställningen</span>
     <span class="discount">Du sparar ${saved} kr </span>`
+    if (cartTotalPrice)
     cartTotalPrice.innerHTML = `Totalt: ${discountedPrice + shipping} kr`
     sumToCheckout = discountedPrice + shipping
+    if (productCost)
     productCost.innerHTML = `Produktkostnad: ${discountedPrice} kr`
   } else {
+    if (cartTotalPrice)
     cartTotalPrice.innerHTML = `Totalt: ${summedPrice + shipping} kr`
     sumToCheckout = summedPrice + shipping
   }
@@ -377,21 +391,27 @@ export const countTotalPrice = () => {
  * @param {*} inputClass Produktlistan eller korglistan ska skickas in
  * @param {*} datasetID Dataset id till inputrutan
  */
-const selectAllInputs = (inputClass, datasetID) => {
+const selectAllInputs = (inputClass: string, datasetID: string) => {
   const allAmountInputs = document.querySelectorAll(`.${inputClass}`)
 
-  const updateAmount = e => {
+  const updateAmount: (e: Event) => void = e => {
     productArray.forEach(product => {
       // Hitta produkten som inputrutan tillhör
-      if (e.target.dataset[datasetID] == product.id) {
+      const target = e.target as HTMLInputElement
+      if (Number(target.dataset[datasetID]) == product.id) {
         // Om inputrutans värde ändras till 0 eller mindre i varukorgen, ändra inputrutans värde till 1
-        if ((Number(e.target.value) <= 0) & cartModal.open) {
-          e.target.value = Number(1)
+        if ((Number(target.value) <= 0) && cartModal?.open) {
+          target.value = String(1)
         }
-        product.amount = Number(e.target.value)
+        product.amount = Number(target.value)
 
         // Uppdatera inputrutans värde på huvudsidan
-        document.querySelector(`.amount-${product.id}`).value = product.amount
+        const productAmountInput: HTMLInputElement | null = document.querySelector(`.amount-${product.id}`)
+
+        if (productAmountInput) {
+          let inputValueAsNumber: number = parseFloat(productAmountInput.value)
+          inputValueAsNumber = product.amount
+      }
 
         // Om inputrutans värde på huvudsidan ökas till 1 eller mer -
         if (e.target.value > 0) {

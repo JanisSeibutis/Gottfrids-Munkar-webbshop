@@ -1,4 +1,4 @@
-import productArray from './products'
+import {productArray} from './products'
 import { renderSortedProducts } from './main'
 
 /* Lägger till sorterings funktion till alla sorterings knappar */ // ----------------KRAV--------------
